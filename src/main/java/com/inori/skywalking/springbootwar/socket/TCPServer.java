@@ -18,6 +18,8 @@ public class TCPServer {
 
     private int port = 16990;
 
+    private static boolean isStarted = false;
+
     @PostConstruct
     public void startTCPServer() {
         log.info("启动一个TCP服务");
@@ -29,6 +31,8 @@ public class TCPServer {
             public void runAfter() throws Exception {
                 log.debug("绑定[{}]端口服务", port);
                 ServerSocket server = new ServerSocket(port);
+
+                isStarted = true;
 
                 taskServer.submit(new NamedRunnable() {
                     @Override
@@ -64,7 +68,10 @@ public class TCPServer {
                     }
                 });
             }
-        }.setName("TCP[" + port + "]服务"));
+        }.setName("TCP[" + port + "]服务").setThrowException(true));
     }
 
+    public static boolean isStarted() {
+        return isStarted;
+    }
 }

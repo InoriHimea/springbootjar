@@ -113,4 +113,24 @@ public class ExecutorServiceManager {
 
         return target;
     }
+
+    /**
+     * SingleThread计划任务
+     * @param groupName
+     * @return
+     */
+    public static ScheduledExecutorService getSingleScheduledExecutorService(String groupName) {
+        ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor(new PingThreadFactory(groupName));
+
+        ScheduledExecutorService target = scheduledExecutorServiceMap.putIfAbsent(groupName, service);
+        //为null表示原来没有，否则返回已有对象
+        if (target == null) {
+            target = service;
+        } else {
+            service.shutdown();
+            logger.debug("关闭{}", service.isShutdown());
+        }
+
+        return target;
+    }
 }

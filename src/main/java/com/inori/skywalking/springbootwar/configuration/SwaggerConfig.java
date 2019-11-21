@@ -1,6 +1,7 @@
 package com.inori.skywalking.springbootwar.configuration;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,8 +24,9 @@ public class SwaggerConfig {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(ApiInfo())
                 .select()
-                .apis(RequestHandlerSelectors.withClassAnnotation(Controller.class))
-                .apis(RequestHandlerSelectors.withClassAnnotation(RestController.class))
+                .apis(RequestHandlerSelectors.basePackage("com.inori.skywalking.springbootwar.controller"))
+/*                .apis(RequestHandlerSelectors.withClassAnnotation(Controller.class))
+                .apis(RequestHandlerSelectors.withClassAnnotation(RestController.class))*/
                 .paths(PathSelectors.any())
                 .build()
                 .globalOperationParameters(new LinkedList<>());

@@ -27,52 +27,9 @@ public class MyBatisServiceImpl extends ServiceImpl<UserMapper, User> implements
     }
 
     @Override
+    @DS("#type")
     public List<User> getUsersInfo(String type) {
         logger.info("当前的数据库类型{}", type);
-
-        switch (type) {
-            case "pgsql1":
-                return getUsersFromPgSQL1();
-            case "pgsql2":
-                return getUsersFromPgSQL2();
-            case "mysql1":
-                return getUsersFromMySQL1();
-            case "mysql2":
-                return getUsersFromMySQL2();
-            case "mysql3":
-                return getUsersFromMySQL3();
-        }
-
-        return null;
-    }
-
-    @DS("mysql1")
-    public List<User> getUsersFromMySQL1() {
-        logger.info("从mysql1获取数据");
-        return userMapper.getUserInfo(null);
-    }
-
-    @DS("mysql2")
-    public List<User> getUsersFromMySQL2() {
-        logger.info("从mysql2获取数据");
-        return userMapper.getUserInfo(null);
-    }
-
-    @DS("mysql3")
-    public List<User> getUsersFromMySQL3() {
-        logger.info("从mysql2获取数据");
-        return userMapper.getUserInfo(null);
-    }
-
-    @DS("postgresql1")
-    public List<User> getUsersFromPgSQL1() {
-        logger.info("从postgres1获取数据");
-        return userMapper.getUserInfo("skywalking");
-    }
-
-    @DS("postgresql2")
-    public List<User> getUsersFromPgSQL2() {
-        logger.info("从postgres2获取数据");
-        return userMapper.getUserInfo("skywalking");
+        return userMapper.getUserInfo(type.contains("pgsql") ? "skywalking" : null);
     }
 }
